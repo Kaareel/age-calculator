@@ -2,95 +2,72 @@ import { useState } from "react";
 import Calculator from "./components/Calculator";
 import Input from "./components/Input";
 import Icon from "./components/Icon";
+import {calculatorAge, validate } from "./utils/helpers";
+
 
 function App() {
-  const [day, setDay] = useState("");
-  const [month, setMonth] = useState("");
-  const [year, setYear] = useState("");
+  const [dateData, setDateData] = useState({
+    day: "",
+    month: "",
+    year: "",
+  })
   const [error, setError] = useState<{ [key: string]: string }>({});
+  const [age, setAge] = useState({year: '--', month: '--', day: '--'})
 
-  const handleChangeDay = (e: any) => {
-    const value = e.target.value;
-    setDay(value);
-  };
-  const handleChangeMonth = (e: any) => {
-    const value = e.target.value;
-    setMonth(value);
-  };
-  const handleChangeYear = (e: any) => {
-    const value = e.target.value;
-    setYear(value);
+  const handleChange = (e: any) => {
+    console.log("name: ", e.target.name)
+    const {value, name} = e.target;
+    setDateData({
+      ...dateData,
+      [name]: value,
+    });
   };
 
-  function validate() {
-    const newError: { [key: string]: string } = {
-      day: "",
-      month: "",
-      year: "",
-    };
-    if (!day) {
-      console.log(day);
-      newError.day = "This field is required";
-    } else if (Number(day) >= 32) {
-      newError.day = "Must be a valid day";
-    } else {
-      newError.day = "";
-    }
-    if (!month) {
-      newError.month = "This field is required";
-    } else if (Number(month) >= 13) {
-      newError.month = "Must be a valid month";
-    } else {
-      newError.month = "";
-    }
-    if (!year) {
-      newError.year = "This field is required";
-    } else if (Number(year) >= 2024) {
-      newError.year = "Must be in past";
-    } else {
-      newError.year = "";
-    }
-
-    return newError;
-  }
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    const errors = validate();
+    const errors = validate(dateData.year, dateData.month, dateData.day);
     setError(errors);
     if (Object.values(errors).length > 0) {
       return;
     }
+    const result = calculatorAge(dateData.year, dateData.month, dateData.day)
+    setAge(result)
   };
-
   return (
     <div className="bg-slate-200 h-screen place-content-center flex items-center">
-      <div className="bg-white grid p-[50px] max-w-[750]">
-          <form onSubmit={handleSubmit} className="grid justify-center relative">
-            <div className="flex justify-center">
+      <div className="bg-white grid p-[50px] max-w-[750] rounded-br-[50%]">
+        <form onSubmit={handleSubmit} className="grid justify-center relative">
+          <div className="flex justify-center mr-9">
             <Input
               title="DAY"
+              name="day"
               placeholder="DD"
-              onChange={handleChangeDay}
+              onChange={handleChange}
               error={error.day}
             />
             <Input
               title="MONTH"
+              name="month"
               placeholder="MM"
-              onChange={handleChangeMonth}
+              onChange={handleChange}
               error={error.month}
             />
             <Input
               title="YEAR"
+              name="year"
               placeholder="YYYY"
-              onChange={handleChangeYear}
+              onChange={handleChange}
               error={error.year}
             />
-            </div>
-            <div>
-              <button className="bg-bgButton rounded-full absolute right-0"><Icon/></button>
-            </div>
-          </form>
-        <Calculator year={year} month={month} day={day} />
+          </div>
+          <div>
+            <button className="bg-bgButton rounded-[50%] absolute right-0 hover:bg-black w-14 h-14 p-1">
+              <Icon />
+            </button>
+          </div>
+        </form>
+        <hr className="border-0 h-px bg-gray-200 mt-6"/>
+        <Calculator year={age.year} month={age.month} day={age.day} />
       </div>
     </div>
   );

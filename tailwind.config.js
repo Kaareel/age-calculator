@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        bgButton: 'hsl(259, 100%, 65%)'
+        bgButton: 'hsl(259, 100%, 65%)', textColorDate: 'hsl(259, 100%, 65%)', textColorTitle: 'hsl(0, 100%, 67%)'
       }
     },
   },
