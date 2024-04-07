@@ -4,9 +4,6 @@ interface Props {
   day: string;
 }
 function Calculator(props: Props) {
-  console.log("años", props.year)
-  console.log("mes", props.month)
-  console.log("dia", props.day)
   return (
     <div className="pt-10">
       <p className="italic font-bold text-6xl"><span className="text-textColorDate">{props.year}</span> años</p>
