@@ -38,10 +38,10 @@ export const calculatorAge = (year: string, month: string, day: string) => {
       newError.day = "This field is required"; 
     } else if (Number(day) < 1 || Number(day) > 31) {
       newError.day = "Must be a valid day";
-    }else if (Number(day) >= 30 && Number(month) === 2){
+    }else if ((Number(day) >= 30 && Number(month) === 2) || (Number(day) >= 29 && Number(month) === 2 && Number(year) % 4 !== 0)) {
         newError.day = "Must be a valid day"
     }
-    else if (Number(day) >= 31 && Number(month) === 2 || Number(month) === 4 || Number(month) === 6 || Number(month) === 9 || Number(month) === 11){
+    else if ((Number(day) >= 31 && Number(month) === 4) || (Number(day) >= 31 && Number(month) === 6) || (Number(day) >= 31 && Number(month) === 9) || (Number(day) >= 31 && Number(month) === 11)){
         newError.day = "Must be a valid day"
     }
     if (!month) {
